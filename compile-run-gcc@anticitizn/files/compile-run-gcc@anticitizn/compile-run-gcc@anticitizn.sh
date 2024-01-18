@@ -1,16 +1,21 @@
 #! /bin/bash
 FILENAME="$1"
 
-# Remove the file's original extension and change it to .out
+# Get the file's base name (without the path)
+BASENAME="$(basename "${FILENAME}")"
+
+# Remove the file's original extension
+OUTPUT="${BASENAME%.*}"
+
 DIR="$(dirname "${FILENAME}")"
-OUTPUT="${DIR}/a.out"
+OUTPUT_DIR="${DIR}/${OUTPUT}"
 
 # Compile all files using GCC
-gcc -I./ -o $OUTPUT $@ -Wall
+gcc -I./ -o "$OUTPUT_DIR" "$@" -Wall -lm
 
 # Run the program
 if [ -f "$OUTPUT" ]; then
-    "$OUTPUT"
+    "./$OUTPUT"
 fi
 
 echo
